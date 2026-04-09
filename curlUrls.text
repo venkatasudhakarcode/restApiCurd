@@ -1,0 +1,15 @@
+Open Command Line and execute below urls
+Get Students or student Details:
+
+curl -X GET "http://localhost:8000/students"
+
+curl -X GET "http://localhost:8000/students?id=1"
+
+Post : Add student
+curl -X POST http://localhost:8000/addStudent -H "Content-Type: application/json" -d "{\"name\": \"Ravi\"}"
+
+Put : Update student data
+curl -X PUT http://localhost:8000/updateStudentDetails -H "Content-Type: application/json" -d "{\"id\": \"1\",\"name\":\"sudhakar\"}"
+
+Delete : Delete student data
+curl -X DELETE "http://localhost:8000/deleteStudent?id=1"
