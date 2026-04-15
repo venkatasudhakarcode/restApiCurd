@@ -4,7 +4,9 @@ import json
 
 from models.student_model import (
     get_student,
-    add_student
+    add_student,
+    update_student
+    
 )
 
 class studentHandler(BaseHTTPRequestHandler):
@@ -18,9 +20,6 @@ class studentHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         parsed = urlparse(self.path)
         path = parsed.path
-
-        print("+++++++++++++++++++")
-        
         if path == "/students":
             query = parse_qs(parsed.query)
             print(query)
@@ -35,10 +34,7 @@ class studentHandler(BaseHTTPRequestHandler):
             
         return self.send_json({"error": "Invalid route"}, 404)
     
-    def do_POST(self):
-
-        print("+++++++++++++++++++")
-        print(self.path)
+    def do_POST(self):    
         
         if self.path == "/addStudent":
             length = int(self.headers.get("Content-Length", 0))
@@ -55,3 +51,26 @@ class studentHandler(BaseHTTPRequestHandler):
             return self.send_json({"message": "Student added"}, 201)
 
         return self.send_json({"error": "Invalid route"}, 404)
+    
+    def do_PUT(self):
+        path = self.path
+        if path == "/updateStudentDetails":
+            length = int(self.headers.get("Content-length"), 0)
+            body = self.rfile(length)
+            data = json.loads(body)
+
+            student_id = data.get("id")
+            name = data.get("name")
+
+            if not student_id or not name:
+                return self.send_json({"error": "id & name required"}, 400)
+
+            updated = update_student(student_id, name)
+
+            if updated == 0:
+                return self.send_json({"error": "Student not found"}, 404)
+
+            return self.send_json({"message": "Updated"})
+
+        return self.send_json({"error": "Invalid route"}, 404)
+        

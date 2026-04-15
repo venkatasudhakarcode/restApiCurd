@@ -32,7 +32,16 @@ def add_student(name, age):
 
 
 def update_student(student_id, name):
-    pass
+    conn = get_connection()
+    if not conn:
+        return None
+    
+    cursor = conn.cursor()
+    cursor.execute("update students set name=% where id=%s",(name, student_id))
+    conn.commit()
+    affectedrows = cursor.rowcount()
+    conn.close()
+    return affectedrows
 
 def delete_student(student_id):
     pass
