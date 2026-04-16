@@ -48,7 +48,7 @@ def delete_student(student_id):
     if not conn:
         return None
     cursor = conn.cursor()
-    cursor.execute("DELETE from students WHERE id=%",(student_id,))
+    cursor.execute("DELETE from students WHERE id=%s",(student_id,))
     conn.commit()
     affected = cursor.rowcount
     conn.close()
