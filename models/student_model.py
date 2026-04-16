@@ -39,9 +39,18 @@ def update_student(student_id, name):
     cursor = conn.cursor()
     cursor.execute("update students set name=% where id=%s",(name, student_id))
     conn.commit()
-    affectedrows = cursor.rowcount()
+    affectedrows = cursor.rowcount
     conn.close()
     return affectedrows
 
 def delete_student(student_id):
-    pass
+    conn = get_connection()
+    if not conn:
+        return None
+    cursor = conn.cursor()
+    cursor.execute("DELETE from students WHERE id=%",(student_id,))
+    conn.commit()
+    affected = cursor.rowcount
+    conn.close()
+    return affected
+

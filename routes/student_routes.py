@@ -5,7 +5,8 @@ import json
 from models.student_model import (
     get_student,
     add_student,
-    update_student
+    update_student,
+    delete_student
     
 )
 
@@ -74,5 +75,21 @@ class studentHandler(BaseHTTPRequestHandler):
 
         return self.send_json({"error": "Invalid route"}, 404)
     def do_DELETE(self):
-        pass
+        parsed = urlparse(self.path)
+
+        if parsed.path == "/deleteStudent":
+            query = parse_qs(parsed.query)
+            student_id = query.get("id", [None])[0]
+
+            if not student_id:
+                return self.send_json({"error":"Id Required"},400)
+            
+            deleted = delete_student(student_id)
+
+            if deleted == 0:
+                return self.send_json({"error":"Studen not found"},404)
+            
+            return self.send_json({"message":"Deleted"})
+        
+        return self.send_json({"error":"invalid route"},404)
         
