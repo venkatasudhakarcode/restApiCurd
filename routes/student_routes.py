@@ -73,4 +73,6 @@ class studentHandler(BaseHTTPRequestHandler):
             return self.send_json({"message": "Updated"})
 
         return self.send_json({"error": "Invalid route"}, 404)
+    def do_DELETE(self):
+        pass
         
